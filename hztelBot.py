@@ -1,18 +1,21 @@
-from telegram.ext import Updater, CommandHandler
-import logging
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+import logging, json
 
-with open('token.txt') as file:
-    tokenStr = file.readline().split('\n')[0]
+config = json.load(open('config.json'))
 
-updater = Updater(token=tokenStr)
+updater = Updater(token=config['TOKEN'])
+
 dispatcher = updater.dispatcher
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 def start(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="I'm a HZFE bot, please talk to me!")
 
-start_handler = CommandHandler('start', start)
-dispatcher.add_handler(start_handler)
+def echo(bot, update):
+    bot.send_message(chat_id=update.message.chat_id, text=update.message.text)
+
+dispatcher.add_handler(CommandHandler('start', start))
+dispatcher.add_handler(MessageHandler(Filters.text, echo))
 
 updater.start_polling()
 updater.idle()
