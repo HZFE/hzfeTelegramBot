@@ -1,10 +1,4 @@
-from telegram.ext import 
-    Updater, 
-    CommandHandler, 
-    MessageHandler, 
-    Filters, 
-    InputTextMessageContent,
-    InlineQueryResultArticle
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, InputTextMessageContent, InlineQueryResultArticle
 import logging, json
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
