@@ -37,7 +37,7 @@ def inline_caps(bot, update):
         return
     results = list()
     results.append(InlineQueryResultArticle(
-        id=query.upper, 
+        id=query.upper(), 
         title='Caps', 
         input_message_content=InputTextMessageContent(query.upper())
     ))
