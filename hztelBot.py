@@ -35,10 +35,11 @@ def caps(bot, update, args):
 
 def inline_caps(bot, update):
     query = update.inline_query.query
+    logging.log('Inline Caps')
     if not query:
         return
-    result = list()
-    result.append(InlineQueryResultArticle(
+    results = list()
+    results.append(InlineQueryResultArticle(
         id=query.upper, 
         title='Caps', 
         input_message_content=InputTextMessageContent(query.upper())
