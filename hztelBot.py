@@ -14,8 +14,11 @@ class TelegramBot :
         self.__updater.start_polling()
         self.__updater.idle()
 
-    def addHandler(self, handlerType, handlerName, handler, **kwargs):
-        self.__dispatcher.add_handler(handlerType(handlerName, handler, **kwargs))
+    def addHandler(self, handlerType, handler, handlerName = '', pass_args = False, **kwargs):
+        if handlerName:
+            self.__dispatcher.add_handler(handlerType(handlerName, handler, **kwargs))
+        else:
+            self.__dispatcher.add_handler(handlerType(handler, **kwargs))
 
 
 def start(bot, update):
@@ -30,7 +33,6 @@ def caps(bot, update, args):
 
 def inline_caps(bot, update):
     query = update.inline_query.query
-    logging.log('Inline Caps')
     if not query:
         return
     results = list()
@@ -44,9 +46,9 @@ def inline_caps(bot, update):
 
 config = json.load(open('config.json'))
 telBot = TelegramBot(config['TOKEN'])
-telBot.addHandler(CommandHandler, 'start', start)
-telBot.addHandler(CommandHandler, 'caps', caps, pass_args=True)
-telBot.addHandler(InlineQueryHandler, 'caps', inline_caps, pass_args=True)
+telBot.addHandler(CommandHandler, handlerName='start', handler=start)
+telBot.addHandler(CommandHandler, handlerName='caps',  handler=caps, pass_args=True)
+telBot.addHandler(InlineQueryHandler, handler=inline_caps)
 telBot.run()
 
 # dispatcher.add_handler(CommandHandler('start', start))
