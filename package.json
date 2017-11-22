@@ -1,0 +1,11 @@
+{
+  "name": "hzfeTelegramBot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:HZFE/hzfeTelegramBot.git",
+  "author": "Geeku <ggongpei@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.29.0"
+  }
+}
