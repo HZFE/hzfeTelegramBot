@@ -28,7 +28,7 @@ export default {
         github: 'merrynode'
     },
     '树': {
-        website: '',
+        website: 'https://geeku.net',
         github: 'gongpeione'
     },
     '丹丹': {
@@ -52,8 +52,8 @@ export default {
         github: 'Yiiu'
     },
     '南昌': {
-        website: 'Reusjs',
-        github: ''
+        website: '',
+        github: 'Reusjs'
     },
     '小k': {
         website: '',

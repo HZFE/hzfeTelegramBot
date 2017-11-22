@@ -29,9 +29,21 @@ bot.onText(/\/link\s(.+)/, (msg, match) => {
     const name = match[1];
     let returnMsg = '';
     let parseMode = 'Markdown';
+    let replyMarkup = [[]];
+    const optionals = { 
+        parse_mode: parseMode,
+    }
 
     if (name === 'list') {
-        returnMsg = '成员列表：' + Object.keys(members).join('，');
+        returnMsg = '请选择成员';
+        const membersList = Object.keys(members);
+        for (let i = 0; i < membersList.length; i++) {
+            replyMarkup.push([{
+                text: '/link ' + membersList[i]
+            }]);
+        }
+        optionals['reply_markup'] = {};
+        optionals['reply_markup']['keyboard'] = replyMarkup;
     } else if (/h(elp)?/i.test(name)) {
         returnMsg = '显示所有成员：/link list\n查询成员链接：/link [member name]';
         parseMode = null;
@@ -42,7 +54,7 @@ bot.onText(/\/link\s(.+)/, (msg, match) => {
     bot.sendMessage(
         chatId, 
         returnMsg, 
-        { parse_mode: parseMode }
+        optionals
     );
 })
 
