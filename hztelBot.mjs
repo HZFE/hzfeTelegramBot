@@ -27,15 +27,22 @@ function memberLinksToMD(name, links) {
 bot.onText(/\/link\s(.+)/, (msg, match) => {
     const chatId = msg.chat.id;
     const name = match[1];
-    let returnMsg = {};
-    if (name in members) {
-        returnMsg = members[name];
+    let returnMsg = '';
+    let parseMode = 'Markdown';
+
+    if (name === 'list') {
+        returnMsg = '成员列表：' + Object.keys(members).join('，');
+    } else if (/h(elp)?/i.test(name)) {
+        returnMsg = '显示所有成员：/link list\n查询成员链接：/link [member name]';
+        parseMode = null;
+    } else if (name in members) {
+        returnMsg = memberLinksToMD(name, members[name]);
     }
 
     bot.sendMessage(
         chatId, 
-        memberLinksToMD(name, members[name]), 
-        { parse_mode: 'Markdown' }
+        returnMsg, 
+        { parse_mode: parseMode }
     );
 })
 
