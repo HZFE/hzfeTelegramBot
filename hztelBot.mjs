@@ -4,21 +4,29 @@ import members from './hzfeLink';
 import { memberLinksToMD } from './utils';
 
 const token = config.TOKEN;
-const name = "hzfeBot";
+const botName = "hzfeBot";
 
 const bot = new TelegramBot(token, {polling: true});
 
 const testAccount = ['gongpeione'];
 
+const helpText = `
+雷猴我是一个机器人，我阔以做这些事：
+@${botName} /start 显示初始信息
+@${botName} /help 查看帮助
+@${botName} /link 查看 HZFEer 链接
+`;
+
 function metionedMe (msg) {
     const content = msg.text;
-    const sendToMeReg = new RegExp(`^@${name}`);
-    if (testAccount.indexOf(msg.from.username) > -1) {
-        return true;
-    }
+    const sendToMeReg = new RegExp(`^@${botName}`);
+    // if (testAccount.indexOf(msg.from.username) > -1) {
+    //     return true;
+    // }
     if (!sendToMeReg.test(content)) {
         return;
     }
+    return true;
 }
 
 bot.onText(/\/start/, (msg, match) => {
@@ -29,36 +37,58 @@ bot.onText(/\/start/, (msg, match) => {
     bot.sendMessage(chatId, 'Hello there!');
 });
 
-bot.onText(/\/link\s(.+)/, (msg, match) => {
+bot.onText(/\/help/, (msg, match) => {
     if (!metionedMe(msg)) {
         return;
     }
     const chatId = msg.chat.id;
+    bot.sendMessage(chatId, helpText);
+});
+
+bot.onText(/\/link\s(.+)/, (msg, match) => {
+    if (!metionedMe(msg)) {
+        return;
+    }
+    let chatId = msg.chat.id;
     const name = match[1];
     let returnMsg = '';
     let replyMarkup = [[]];
     const optionals = { 
         parse_mode: 'Markdown',
     }
+    const help = '显示所有成员：/link list\n查询成员链接：/link [member-name]';
+    
+    if (!name) {
+        returnMsg = help;
+    }
 
+    const membersList = Object.keys(members);
     if (name === 'list') {
-        returnMsg = '请选择成员';
-        const membersList = Object.keys(members);
+        returnMsg = `@${msg.from.username} 请选择成员`;
         for (let i = 0; i < membersList.length; i++) {
             replyMarkup.push([{
-                text: '/link ' + membersList[i]
+                text: `@${botName} /link ${membersList[i]}`
             }]);
         }
         optionals['reply_markup'] = {};
         optionals['reply_markup']['keyboard'] = replyMarkup;
+        optionals['reply_markup']['selective'] = true; // 只给对应用户弹键盘，但并没有什么用
+        // optionals['reply_to_message_id'] = msg.message_id;
+        // chatId = msg.from.id;
     } else if (/h(elp)?/i.test(name)) {
-        returnMsg = '显示所有成员：/link list\n查询成员链接：/link [member-name]';
+        returnMsg = `显示所有成员：@${botName} /link list\n查询成员链接：@${botName} /link [member-name]`;
         optionals.parse_mode = null;
-    } else if (name in members) {
-        returnMsg = memberLinksToMD(name, members[name]);
-        optionals['reply_markup'] = {
-            remove_keyboard: true
-        };
+    } else {
+        const nameInList = membersList.filter(m => m.indexOf(name) > -1);
+        if (nameInList.length > 1) {
+            returnMsg = '名字再具体一点。';
+        } else {
+            console.log(msg);
+            returnMsg = memberLinksToMD(name, members[nameInList[0]]);
+            optionals['reply_markup'] = {
+                remove_keyboard: true
+            };
+        }
     }
 
     bot.sendMessage(
@@ -71,14 +101,18 @@ bot.onText(/\/link\s(.+)/, (msg, match) => {
 bot.on('message', (msg) => {
     const chatId = msg.chat.id;
     const content = msg.text;
-    const cmdReg = new RegExp(`^@${name}\\s+/(\\w+)\\s?([\\s\\w]+)?`);
+    const cmdReg = new RegExp(`^@${botName}\\s+/(\\w+)?\\s?([\\s\\w]+)?`);
 
     if (!metionedMe(msg)) {
         return;
     }
 
     let cmd = content.match(cmdReg);
-    // console.log(cmd);
+    console.log(cmd);
+    if (!cmd) {
+        bot.sendMessage(chatId, helpText);
+        return;
+    }
 
     bot.emit(`/${cmd[1]}`, msg, cmd[2]);
     // bot.sendMessage(chatId, 'Message received!');
