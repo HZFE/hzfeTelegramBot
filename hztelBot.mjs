@@ -12,9 +12,9 @@ const testAccount = ['gongpeione'];
 
 const helpText = `
 雷猴我是一个机器人，我阔以做这些事：
-@${botName} /start 显示初始信息
-@${botName} /help 查看帮助
-@${botName} /link 查看 HZFEer 链接
+[@${botName} /start] 显示初始信息
+[@${botName} /help] 查看帮助
+[@${botName} /link] 查看 HZFEer 链接
 `;
 
 function metionedMe (msg) {
@@ -56,7 +56,7 @@ bot.onText(/\/link\s(.+)/, (msg, match) => {
     const optionals = { 
         parse_mode: 'Markdown',
     }
-    const help = '显示所有成员：/link list\n查询成员链接：/link [member-name]';
+    const help = `显示所有成员：@${botName} /link list\n查询成员链接：@${botName} /link [member-name]`;
     
     if (!name) {
         returnMsg = help;
@@ -76,7 +76,7 @@ bot.onText(/\/link\s(.+)/, (msg, match) => {
         // optionals['reply_to_message_id'] = msg.message_id;
         // chatId = msg.from.id;
     } else if (/h(elp)?/i.test(name)) {
-        returnMsg = `显示所有成员：@${botName} /link list\n查询成员链接：@${botName} /link [member-name]`;
+        returnMsg = help;
         optionals.parse_mode = null;
     } else {
         const nameInList = membersList.filter(m => m.indexOf(name) > -1);
@@ -108,7 +108,7 @@ bot.on('message', (msg) => {
     }
 
     let cmd = content.match(cmdReg);
-    console.log(cmd);
+    // console.log(cmd);
     if (!cmd) {
         bot.sendMessage(chatId, helpText);
         return;
