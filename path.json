@@ -1,4 +1,6 @@
 {
     "SS_PATH": "/etc/shadowsocks-libev/config.json",
-    "SSR_PATH": "/etc/shadowsocks-r/config.json"
+    "SS_IMG": "/root/shadowsocks_libev_qr.png",
+    "SSR_PATH": "/etc/shadowsocks-r/config.json",
+    "SSR_IMG": "/root/shadowsocks_r_qr.png"
 }
