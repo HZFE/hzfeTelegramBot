@@ -55,7 +55,7 @@ bot.onText(/\/ss/, (msg, match) => {
     const chatId = msg.chat.id;
     const ssInfo = fs.readFileSync(pathConfig.SS_PATH);
     bot.sendMessage(chatId, ssInfo);
-    bot.sendPhoto(chat_id, fs.readFileSync(pathConfig.SS_IMG));
+    bot.sendPhoto(chatId, fs.readFileSync(pathConfig.SS_IMG));
 });
 
 bot.onText(/\/ssr/, (msg, match) => {
@@ -65,7 +65,7 @@ bot.onText(/\/ssr/, (msg, match) => {
     const chatId = msg.chat.id;
     const ssInfo = fs.readFileSync(pathConfig.SSR_PATH);
     bot.sendMessage(chatId, ssInfo);
-    bot.sendPhoto(chat_id, fs.readFileSync(pathConfig.SSR_IMG));
+    bot.sendPhoto(chatId, fs.readFileSync(pathConfig.SSR_IMG));
 });
 
 bot.onText(/\/link\s(.+)/, (msg, match) => {
