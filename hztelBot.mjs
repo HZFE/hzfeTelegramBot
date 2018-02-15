@@ -57,6 +57,15 @@ bot.onText(/\/ss/, (msg, match) => {
     bot.sendMessage(chatId, ssInfo);
 });
 
+bot.onText(/\/ssr/, (msg, match) => {
+    if (!metionedMe(msg)) {
+        return;
+    }
+    const chatId = msg.chat.id;
+    const ssInfo = fs.readFileSync(pathConfig.SSR_PATH);
+    bot.sendMessage(chatId, ssInfo);
+});
+
 bot.onText(/\/link\s(.+)/, (msg, match) => {
     if (!metionedMe(msg)) {
         return;

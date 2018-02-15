@@ -1,3 +1,4 @@
 {
-    "SS_PATH": "/etc/shadowsocks-libev/config.json"
+    "SS_PATH": "/etc/shadowsocks-libev/config.json",
+    "SSR_PATH": "/etc/shadowsocks-r/config.json"
 }
