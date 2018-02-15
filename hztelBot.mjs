@@ -48,7 +48,7 @@ bot.onText(/\/help/, (msg, match) => {
     bot.sendMessage(chatId, helpText);
 });
 
-bot.onText(/\/ss/, (msg, match) => {
+bot.onText(/\/ss$/, (msg, match) => {
     if (!metionedMe(msg)) {
         return;
     }
@@ -58,7 +58,7 @@ bot.onText(/\/ss/, (msg, match) => {
     bot.sendPhoto(chatId, fs.readFileSync(pathConfig.SS_IMG));
 });
 
-bot.onText(/\/ssr/, (msg, match) => {
+bot.onText(/\/ssr$/, (msg, match) => {
     if (!metionedMe(msg)) {
         return;
     }
