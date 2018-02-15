@@ -1,5 +1,8 @@
+import fs from 'fs';
+
 import TelegramBot from 'node-telegram-bot-api';
 import config from './config';
+import pathConfig from './path';
 import members from './hzfeLink';
 import { memberLinksToMD } from './utils';
 
@@ -43,6 +46,15 @@ bot.onText(/\/help/, (msg, match) => {
     }
     const chatId = msg.chat.id;
     bot.sendMessage(chatId, helpText);
+});
+
+bot.onText(/\/ss/, (msg, match) => {
+    if (!metionedMe(msg)) {
+        return;
+    }
+    const chatId = msg.chat.id;
+    const ssInfo = fs.readFileSync(pathConfig.SS_PATH);
+    bot.sendMessage(chatId, ssInfo);
 });
 
 bot.onText(/\/link\s(.+)/, (msg, match) => {
